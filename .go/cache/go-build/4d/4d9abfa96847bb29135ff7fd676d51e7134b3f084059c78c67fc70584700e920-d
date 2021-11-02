@@ -1,0 +1,6 @@
+./client.go
+./enums.go
+./models.go
+./recordsets.go
+./version.go
+./zones.go

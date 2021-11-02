@@ -1,0 +1,5 @@
+./async.go
+./azure.go
+./environments.go
+./metadata_environment.go
+./rp.go

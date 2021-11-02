@@ -1,0 +1,3 @@
+./middleware.go
+./presign_middleware.go
+./v4.go

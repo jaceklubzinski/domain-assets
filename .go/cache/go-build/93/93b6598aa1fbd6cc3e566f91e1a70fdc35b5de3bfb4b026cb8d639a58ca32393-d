@@ -1,0 +1,11 @@
+./api_client.go
+./api_op_GetRoleCredentials.go
+./api_op_ListAccountRoles.go
+./api_op_ListAccounts.go
+./api_op_Logout.go
+./deserializers.go
+./doc.go
+./endpoints.go
+./go_module_metadata.go
+./serializers.go
+./validators.go

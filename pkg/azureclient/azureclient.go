@@ -71,9 +71,7 @@ func (a *AzureClient) ListDomains() ([]dnsassets.Inventory, error) {
 	)
 
 	recordTypes := []dns.RecordType{"A", "CNAME"}
-
 	for _, rt := range recordTypes {
-
 		azureRecords, err := a.ListDomainsByType(rt)
 		if err != nil {
 			log.WithFields(log.Fields{
@@ -87,12 +85,10 @@ func (a *AzureClient) ListDomains() ([]dnsassets.Inventory, error) {
 			if string(rt) == "A" {
 				for _, record := range *domain.ARecords {
 					records = append(records, *record.Ipv4Address)
-
 				}
 			} else if string(rt) == "CNAME" {
 				record := *domain.CnameRecord.Cname
 				records = append(records, record)
-
 			}
 
 			a := dnsassets.Inventory{

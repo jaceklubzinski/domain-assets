@@ -2,31 +2,47 @@ package main
 
 import (
 	"domain-assets/pkg/dnsassets"
+	"time"
 
 	log "github.com/sirupsen/logrus"
+	"gorm.io/gorm"
 )
 
-func manageAssets(db *dnsassets.Store, assets []dnsassets.Inventory) {
+func manageAssets(assets []dnsassets.Inventory) {
+	db := initDB()
+
 	for _, records := range assets {
-		exist, err := db.CheckIfExist(records.Name)
-		if err != nil {
+		var i dnsassets.Inventory
+		r := db.Where("name = ?", records.Name).First(&i)
+		if r.Error != nil && r.Error != gorm.ErrRecordNotFound {
 			log.WithFields(log.Fields{
-				"error": err,
-			}).Fatalln("unable to check Azure asset")
+				"error": r.Error,
+			}).Fatalln("unable to check DNS asset")
 		}
-		if exist {
-			err := db.LastUpdate(records.Name)
-			if err != nil {
+		if r.RowsAffected > 0 {
+			i.Status = "Active"
+			i.LastUpdate = time.Now().String()
+			r := db.Save(&i)
+			if r.Error != nil {
 				log.WithFields(log.Fields{
-					"error": err,
-				}).Fatalln("unable to update Azure asset")
+					"error": r.Error,
+				}).Fatalln("unable to update DNS asset")
 			}
 		} else {
-			err := db.AddRow(records.Name, records.RecordType, records.RecordProvider, records.DNSZone, records.ResourceRecords)
-			if err != nil {
+			r := db.Create(&dnsassets.Inventory{
+				Name:            records.Name,
+				RecordType:      records.RecordType,
+				Description:     records.Description,
+				DNSZone:         records.DNSZone,
+				RecordProvider:  records.RecordProvider,
+				ResourceRecords: records.ResourceRecords,
+				Status:          "Active",
+				AddetAt:         time.Now().String(),
+			})
+			if r.Error != nil {
 				log.WithFields(log.Fields{
-					"error": err,
-				}).Fatalln("unable to save Azure asset")
+					"error": r.Error,
+				}).Fatalln("unable to save DNS asset")
 			}
 		}
 	}

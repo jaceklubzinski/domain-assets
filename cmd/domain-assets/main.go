@@ -17,12 +17,9 @@ limitations under the License.
 package main
 
 func main() {
-
-	db := initApp()
+	initApp()
 	awsAssets := runAWS()
 	azureAssets := runAzure()
 	DNSAssets := append(awsAssets, azureAssets...)
-	//manageAssets(db, azureAssets)
-
-	manageAssets(db, DNSAssets)
+	manageAssets(DNSAssets)
 }

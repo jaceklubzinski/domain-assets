@@ -21,7 +21,6 @@ func NewAWSClient(cfg aws.Config) *AWSClient {
 }
 
 func (a *AWSClient) ListZones() ([]types.HostedZone, error) {
-
 	zones, err := a.cfg.ListHostedZones(context.TODO(), nil)
 
 	if err != nil {
@@ -31,7 +30,6 @@ func (a *AWSClient) ListZones() ([]types.HostedZone, error) {
 }
 
 func (a *AWSClient) ListZoneDomains(zoneID string) ([]types.ResourceRecordSet, error) {
-
 	var allDmains []types.ResourceRecordSet
 	params := &route53.ListResourceRecordSetsInput{
 		HostedZoneId: aws.String(zoneID),
@@ -54,15 +52,11 @@ func (a *AWSClient) ListZoneDomains(zoneID string) ([]types.ResourceRecordSet, e
 		if err != nil {
 			return nil, err
 		}
-
 	}
-
 	return allDmains, nil
-
 }
 
 func (a *AWSClient) ListDomains() ([]dnsassets.Inventory, error) {
-
 	var (
 		awsAsset []dnsassets.Inventory
 		records  []string

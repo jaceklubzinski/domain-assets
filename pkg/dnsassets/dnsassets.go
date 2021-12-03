@@ -1,18 +1,22 @@
 package dnsassets
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Inventory struct {
 	gorm.Model
-	Name            string
-	RecordType      string
-	Description     string
-	DNSZone         string
-	RecordProvider  string
-	ResourceRecords string
-	AddetAt         string
-	LastUpdate      string
-	Status          string
+	Name            string    `json:"name`
+	RecordType      string    `json:"type`
+	Description     string    `json:"description`
+	DNSZone         string    `json:"zone`
+	RecordProvider  string    `json:"provider"`
+	ResourceRecords string    `json:"resource"`
+	AddedAt         time.Time `json:"added_at"`
+	LastUpdate      time.Time `json:"last_update"`
+	Status          string    `json:"status"`
 }
 
 type ProviderAsset struct {

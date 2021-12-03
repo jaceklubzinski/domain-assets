@@ -35,7 +35,7 @@ export CGO_ENABLED=1
 export GOARCH="${ARCH}"
 export GOOS="${OS}"
 export GO111MODULE=on
-export GOFLAGS="-mod=vendor"
+export GOFLAGS=""
 
 go install                                                      \
     -installsuffix "static"                                     \

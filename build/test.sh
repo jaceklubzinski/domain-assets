@@ -20,7 +20,7 @@ set -o pipefail
 
 export CGO_ENABLED=1
 export GO111MODULE=on
-export GOFLAGS="-mod=vendor"
+export GOFLAGS=""
 
 TARGETS=$(for d in "$@"; do echo ./$d/...; done)
 

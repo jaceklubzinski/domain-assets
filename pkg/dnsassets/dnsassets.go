@@ -8,10 +8,10 @@ import (
 
 type Inventory struct {
 	gorm.Model
-	Name            string    `json:"name`
-	RecordType      string    `json:"type`
-	Description     string    `json:"description`
-	DNSZone         string    `json:"zone`
+	Name            string    `json:"name"`
+	RecordType      string    `json:"type"`
+	Description     string    `json:"description"`
+	DNSZone         string    `json:"zone"`
 	RecordProvider  string    `json:"provider"`
 	ResourceRecords string    `json:"resource"`
 	AddedAt         time.Time `json:"added_at"`

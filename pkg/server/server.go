@@ -22,6 +22,11 @@ func (s *Server) Start() {
 	router.GET("/dns/lastadded", s.getLastAdded)
 	router.GET("/dns/inactive", s.getInactive)
 	router.Run("localhost:8080")
+	if err != nil {
+		log.WithFields(log.Fields{
+			"error": err,
+		}).Fatalln("Unable to load Azure SDK auth from CLI")
+	}
 }
 
 func (s *Server) getAll(c *gin.Context) {

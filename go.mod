@@ -18,5 +18,5 @@ require (
 	github.com/sirupsen/logrus v1.8.1
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
 	gorm.io/driver/sqlite v1.2.3
-	gorm.io/gorm v1.22.2
+	gorm.io/gorm v1.22.5
 )

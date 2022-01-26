@@ -11,7 +11,7 @@ require (
 	github.com/Azure/go-autorest/autorest/validation v0.3.1 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.13.0
 	github.com/aws/aws-sdk-go-v2/config v1.4.1
-	github.com/aws/aws-sdk-go-v2/service/route53 v1.7.0
+	github.com/aws/aws-sdk-go-v2/service/route53 v1.17.0
 	github.com/form3tech-oss/jwt-go v3.2.3+incompatible // indirect
 	github.com/gin-gonic/gin v1.7.4
 	github.com/kelseyhightower/envconfig v1.4.0

@@ -1,5 +1,0 @@
-./app.go
-./aws.go
-./azure.go
-./main.go
-./manage.go

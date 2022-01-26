@@ -2,6 +2,7 @@ package main
 
 import (
 	"domain-assets/pkg/dnsassets"
+	"domain-assets/pkg/server"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -21,7 +22,7 @@ func manageAssets(assets []dnsassets.Inventory) {
 		}
 		if r.RowsAffected > 0 {
 			i.Status = "Active"
-			i.LastUpdate = time.Now().String()
+			i.LastUpdate = time.Now()
 			r := db.Save(&i)
 			if r.Error != nil {
 				log.WithFields(log.Fields{
@@ -37,7 +38,7 @@ func manageAssets(assets []dnsassets.Inventory) {
 				RecordProvider:  records.RecordProvider,
 				ResourceRecords: records.ResourceRecords,
 				Status:          "Active",
-				AddetAt:         time.Now().String(),
+				AddedAt:         time.Now(),
 			})
 			if r.Error != nil {
 				log.WithFields(log.Fields{
@@ -46,4 +47,6 @@ func manageAssets(assets []dnsassets.Inventory) {
 			}
 		}
 	}
+	HTTPServer := server.NewServer(db)
+	HTTPServer.Start()
 }

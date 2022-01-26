@@ -22,4 +22,5 @@ func main() {
 	azureAssets := runAzure()
 	DNSAssets := append(awsAssets, azureAssets...)
 	manageAssets(DNSAssets)
+
 }

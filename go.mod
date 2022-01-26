@@ -13,8 +13,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.4.1
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.7.0
 	github.com/form3tech-oss/jwt-go v3.2.3+incompatible // indirect
+	github.com/gin-gonic/gin v1.7.4
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/mattn/go-sqlite3 v1.14.9 // indirect
 	github.com/sirupsen/logrus v1.8.1
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
 	gorm.io/driver/sqlite v1.2.3

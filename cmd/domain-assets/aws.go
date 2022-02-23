@@ -6,24 +6,44 @@ import (
 	"domain-assets/pkg/dnsassets"
 
 	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/kelseyhightower/envconfig"
+	"github.com/aws/aws-sdk-go-v2/credentials"
 	log "github.com/sirupsen/logrus"
+	"github.com/urfave/cli/v2"
 )
 
-//envAWS env variable configuration for AWS
-type envAWS struct {
-	AWSSecretAccessKey string `required:"true" split_words:"true"`
-	AWSAccessKeyID     string `required:"true" split_words:"true"`
-	AWSDefaultRegion   string `required:"true" split_words:"true"`
+func awsFlags() []cli.Flag {
+	return []cli.Flag{
+		&cli.StringFlag{
+			Name:     "aws-access-keyi-id",
+			Value:    "xxx",
+			Usage:    "AWS CLI access ID",
+			EnvVars:  []string{"AWS_ACCESS_KEY_ID"},
+			Required: true,
+		},
+		&cli.StringFlag{
+			Name:     "aws-secret-access-key",
+			Value:    "xxx",
+			Usage:    "AWS CLI secret access key",
+			EnvVars:  []string{"AWS_SECRET_ACCESS_KEY"},
+			Required: true,
+		},
+		&cli.StringFlag{
+			Name:     "aws-default-region",
+			Value:    "us-east-1",
+			Usage:    "AWS region",
+			EnvVars:  []string{"AWS_DEFAULT_REGION"},
+			Required: true,
+		},
+	}
 }
 
-func runAWS() []dnsassets.Inventory {
-	var env envAWS
+func runAWS(c *cli.Context) []dnsassets.Inventory {
 
-	if err := envconfig.Process("", &env); err != nil {
-		log.Fatal(err.Error())
-	}
-	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion(env.AWSDefaultRegion))
+	cfg, err := config.LoadDefaultConfig(
+		context.TODO(),
+		config.WithRegion(c.String("aws-default-region")),
+		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(c.String("aws-access-keyi-id"), c.String("aws-secret-access-key"), "")),
+	)
 	if err != nil {
 		log.WithFields(log.Fields{
 			"error": err,

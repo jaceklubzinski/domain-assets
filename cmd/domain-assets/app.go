@@ -3,31 +3,45 @@ package main
 import (
 	"domain-assets/pkg/dnsassets"
 
-	"github.com/kelseyhightower/envconfig"
 	log "github.com/sirupsen/logrus"
+	"github.com/urfave/cli/v2"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
-func initApp() {
+func appFlags() []cli.Flag {
+	return []cli.Flag{
+		&cli.StringFlag{
+			Name:    "sync-loop",
+			Value:   "3600",
+			Usage:   "How often DNS data should be synced in seconds",
+			EnvVars: []string{"DNS_SYNC_LOOP"},
+		},
+		&cli.BoolFlag{
+			Name:  "debug",
+			Usage: "If set verbose logging is enabled",
+		},
+		&cli.BoolFlag{
+			Name:  "trace",
+			Usage: "Be even more verbose when logging stuff",
+		},
+	}
+}
+
+func initApp(c *cli.Context) {
 	formatter := &log.TextFormatter{
 		TimestampFormat:        "02-01-2006 15:04:05",
 		FullTimestamp:          true,
 		DisableLevelTruncation: true,
 	}
 	log.SetFormatter(formatter)
-	log.SetLevel(log.DebugLevel)
-
-	//only to verify env variables just after initial run
-	var envAz envAzure
-	if err := envconfig.Process("", &envAz); err != nil {
-		log.Fatal(err.Error())
-	}
-	var envAWS envAWS
-
-	if err := envconfig.Process("", &envAWS); err != nil {
-		log.Fatal(err.Error())
+	if c.IsSet("trace") {
+		log.SetLevel(log.TraceLevel)
+	} else if c.IsSet("debug") {
+		log.SetLevel(log.DebugLevel)
+	} else {
+		log.SetLevel(log.InfoLevel)
 	}
 }
 

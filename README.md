@@ -24,3 +24,4 @@ AWS_DEFAULT_REGION
 - [ ] Add Swagger
 - [ ] Add synchronization with Azure/AWS
 - [ ] Inactivation logic
+- [ ] Add command line

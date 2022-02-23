@@ -16,10 +16,39 @@ limitations under the License.
 
 package main
 
+import (
+	"domain-assets/pkg/cmdutils"
+	"os"
+	"time"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/urfave/cli/v2"
+)
+
 func main() {
-	initApp()
-	awsAssets := runAWS()
-	azureAssets := runAzure()
-	DNSAssets := append(awsAssets, azureAssets...)
-	manageAssets(DNSAssets)
+
+	app := &cli.App{
+		Flags: cmdutils.MergeFlags(
+			azureFlags(),
+			awsFlags(),
+		),
+		Action: func(c *cli.Context) error {
+			go func() {
+				initApp(c)
+				awsAssets := runAWS(c)
+				azureAssets := runAzure(c)
+				DNSAssets := append(awsAssets, azureAssets...)
+				manageAssets(DNSAssets)
+				time.Sleep(time.Duration(c.Uint("sync-loop")) * time.Second)
+
+			}()
+
+			return nil
+		},
+	}
+
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

@@ -15,7 +15,7 @@ type envAzure struct {
 	AzureZoneName       string `required:"true" split_words:"true"`
 }
 
-func runAzure() []dnsassets.Inventory {
+func initAzure() *dnsassets.ProviderAsset {
 	var env envAzure
 	if err := envconfig.Process("", &env); err != nil {
 		log.Fatal(err.Error())
@@ -33,12 +33,5 @@ func runAzure() []dnsassets.Inventory {
 	})
 
 	azureProvider := dnsassets.NewDNSAsset(azureDNSClient)
-	azureAssets, err := azureProvider.Provider.ListDomains()
-	if err != nil {
-		log.WithFields(log.Fields{
-			"error": err,
-		}).Fatalln("Unable to provide Azure assets")
-	}
-
-	return azureAssets
+	return azureProvider
 }

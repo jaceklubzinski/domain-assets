@@ -17,9 +17,8 @@ type envAWS struct {
 	AWSDefaultRegion   string `required:"true" split_words:"true"`
 }
 
-func runAWS() []dnsassets.Inventory {
+func initAWS() *dnsassets.ProviderAsset {
 	var env envAWS
-
 	if err := envconfig.Process("", &env); err != nil {
 		log.Fatal(err.Error())
 	}
@@ -30,14 +29,6 @@ func runAWS() []dnsassets.Inventory {
 		}).Fatalln("unable to load SDK config")
 	}
 	awsClient := awsclient.NewAWSClient(cfg)
-
 	awsProvider := dnsassets.NewDNSAsset(awsClient)
-	awsAssets, err := awsProvider.Provider.ListDomains()
-	if err != nil {
-		log.WithFields(log.Fields{
-			"error": err,
-		}).Fatalln("unable to provide AWS assets")
-	}
-
-	return awsAssets
+	return awsProvider
 }

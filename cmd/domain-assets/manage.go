@@ -2,16 +2,13 @@ package main
 
 import (
 	"domain-assets/pkg/dnsassets"
-	"domain-assets/pkg/server"
 	"time"
 
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
-func manageAssets(assets []dnsassets.Inventory) {
-	db := initDB()
-
+func manageAssets(db *gorm.DB, assets []dnsassets.Inventory) {
 	for _, records := range assets {
 		var i dnsassets.Inventory
 		r := db.Where("name = ?", records.Name).First(&i)
@@ -47,6 +44,17 @@ func manageAssets(assets []dnsassets.Inventory) {
 			}
 		}
 	}
-	HTTPServer := server.NewServer(db)
-	HTTPServer.Start()
+
+}
+
+func runAsset(db *gorm.DB, azureProvider *dnsassets.ProviderAsset) {
+
+	azureAssets, err := azureProvider.Provider.ListDomains()
+	if err != nil {
+		log.WithFields(log.Fields{
+			"error": err,
+		}).Fatalln("Unable to provide Azure assets")
+	}
+
+	manageAssets(db, azureAssets)
 }

@@ -16,10 +16,20 @@ limitations under the License.
 
 package main
 
+import (
+	"domain-assets/pkg/scheduler"
+	"domain-assets/pkg/server"
+	"time"
+)
+
 func main() {
 	initApp()
-	awsAssets := runAWS()
-	azureAssets := runAzure()
-	DNSAssets := append(awsAssets, azureAssets...)
-	manageAssets(DNSAssets)
+	scheduler := scheduler.NewScheduler(5*time.Second, 1*time.Minute)
+	db := initDB()
+	awsClient := initAWS()
+	azureClient := initAzure()
+	scheduler.Executor(func() { runAsset(db, awsClient, "AWS") })
+	scheduler.Executor(func() { runAsset(db, azureClient, "Azure") })
+	HTTPServer := server.NewServer(db)
+	HTTPServer.Start()
 }

@@ -18,14 +18,12 @@ func initApp() {
 	}
 	log.SetFormatter(formatter)
 	log.SetLevel(log.DebugLevel)
-
 	//only to verify env variables just after initial run
 	var envAz envAzure
 	if err := envconfig.Process("", &envAz); err != nil {
 		log.Fatal(err.Error())
 	}
 	var envAWS envAWS
-
 	if err := envconfig.Process("", &envAWS); err != nil {
 		log.Fatal(err.Error())
 	}
@@ -40,13 +38,11 @@ func initDB() *gorm.DB {
 			"error": err,
 		}).Fatalln("Cant initialize sqlite database")
 	}
-
 	err = db.AutoMigrate(&dnsassets.Inventory{})
 	if err != nil {
 		log.WithFields(log.Fields{
 			"error": err,
 		}).Fatalln("Cant auto migrate database")
 	}
-
 	return db
 }
